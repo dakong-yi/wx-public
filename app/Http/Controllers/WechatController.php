@@ -4,12 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use EasyWeChat\Factory as wechat;
-use EasyWeChat;
-use EasyWeChat\OfficialAccount\Application;
+
 
 class WechatController extends Controller
 {
+    private $wechat;
+
+    /**
+     * WechatController constructor.
+     */
+    public function __construct()
+    {
+        $this->wechat = app('wechat.official_account');
+    }
+
     /**
      * 处理微信的请求消息
      *
@@ -27,5 +35,37 @@ class WechatController extends Controller
         Log::info('return response.');
 
         return $wechat->server->serve();
+    }
+
+    public function createMenu()
+    {
+        $buttons = [
+            [
+                "type" => "click",
+                "name" => "今日歌曲",
+                "key"  => "V1001_TODAY_MUSIC"
+            ],
+            [
+                "name"       => "菜单",
+                "sub_button" => [
+                    [
+                        "type" => "view",
+                        "name" => "搜索",
+                        "url"  => "http://www.soso.com/"
+                    ],
+                    [
+                        "type" => "view",
+                        "name" => "视频",
+                        "url"  => "http://v.qq.com/"
+                    ],
+                    [
+                        "type" => "click",
+                        "name" => "赞一下我们",
+                        "key" => "V1001_GOOD"
+                    ],
+                ],
+            ],
+        ];
+        $this->wechat->menu->create($buttons);
     }
 }
