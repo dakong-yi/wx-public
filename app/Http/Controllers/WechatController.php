@@ -37,6 +37,9 @@ class WechatController extends Controller
         return $wechat->server->serve();
     }
 
+    /**
+     *
+     */
     public function createMenu()
     {
         $buttons = [
@@ -67,5 +70,14 @@ class WechatController extends Controller
             ],
         ];
         $this->wechat->menu->create($buttons);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function menu()
+    {
+        $current = $this->wechat->menu->current();
+        return $current;
     }
 }
