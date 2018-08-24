@@ -80,4 +80,15 @@ class WechatController extends Controller
         $current = $this->wechat->menu->current();
         return $current;
     }
+
+    public function revMsg()
+    {
+        $this->wechat->server->push(function($message){
+            return "点击链接进入我的世界  http://47.95.11.239";
+        });
+
+        Log::info('return response.');
+
+        return $this->wechat->server->serve();
+    }
 }
